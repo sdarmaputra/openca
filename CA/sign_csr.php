@@ -2,35 +2,44 @@
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') 
 	{
-		if(isset($_POST['formSubmit']))
+		if(isset($_POST['formCa']))
 			{
 				include('File/X509.php');
 				include('Crypt/RSA.php');
 				if(isset($_POST['csr']))
 					{
-						$con = mysqli_connect("localhost","root","","csr");
-						// Check connection
-						if (mysqli_connect_errno())
-							{
-								echo "Failed to connect to MySQL: " . mysqli_connect_error();
-							}
+						// $con = mysqli_connect("localhost","root","","csr");
+						// // Check connection
+						// if (mysqli_connect_errno())
+						// 	{
+						// 		echo "Failed to connect to MySQL: " . mysqli_connect_error();
+						// 	}
 
-						$sql="SELECT pubKey, privKey, signature FROM root where username='root'";
-						$result_query=mysqli_query($con,$sql);
+						// $sql="SELECT pubKey, privKey, signature FROM root where username='root'";
+						// $result_query=mysqli_query($con,$sql);
 
-						// Associative array
-						$row = mysqli_fetch_array($result_query,MYSQLI_ASSOC);
+						// // Associative array
+						// $row = mysqli_fetch_array($result_query,MYSQLI_ASSOC);
 
 						//echo $row["pubKey"].$row["privKey"].$row["signature"];
 						$CAPrivKey = new Crypt_RSA();
 						$CAPubKey = new Crypt_RSA();
-						$CAPrivKey->loadKey($row["privKey"]);
-						$CAPubKey->loadKey($row["pubKey"]);
+
+						$privatekeyCsr = file_get_contents("privatekey.cert");
+						#$privKey->loadKey($privatekeyCsr);
+						$publickeyCsr = file_get_contents("publickey.cert");
+						#$pubKey->loadKey($publickeyCsr);
+
+						$CAPrivKey->loadKey($privatekeyCsr);
+						$CAPubKey->loadKey($publickeyCsr);
+						#print_r($CAPrivKey);
+						#print_r($CAPubKey);
 						$csr = $_POST['csr'];
 
 						$issuer = new File_X509();
 						$issuer->setPrivateKey($CAPrivKey);
-						$ca=$issuer->loadX509($row["signature"]);
+						$caroot = file_get_contents("root.cert");
+						$ca = $issuer->loadX509($caroot);
 
 						$subject = new File_X509();
 						$subject->setPublicKey($CAPubKey);
@@ -39,21 +48,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 						$x509 = new File_X509();
 						$x509->setStartDate('-1 month');
 						$x509->setEndDate('+1 year');
-						$sql = "SELECT pubKey,privKey,signature FROM root where username='root'";
-						$result_query=mysqli_query($con,$sql);
+						// $sql = "SELECT pubKey, privKey, signature FROM root where username='root'";
+						// $result_query = mysqli_query($con,$sql);
 
-						// Associative array
-						$row = mysqli_fetch_array($result_query,MYSQLI_ASSOC);
+						// // Associative array
+						// $row = mysqli_fetch_array($result_query,MYSQLI_ASSOC);
 						$serial = '12';
 						$x509->setSerialNumber(chr($serial));
 						$result = $x509->sign($issuer, $subject);
 						$fileca = $x509->saveX509($result);
 
 						// Free result set
-						mysqli_free_result($result_query);
-						mysqli_close($con);
-						echo $fileca;
-						$myfile = fopen("ca".'.cert',"w") or die("Unable to open file!");
+						// mysqli_free_result($result_query);
+						// mysqli_close($con);
+						#echo $fileca;
+						$myfile = fopen("caclient".'.cert',"w") or die("Unable to open file!");
 						fwrite($myfile, $fileca);
 						fclose($myfile);
 						$file = "ca".'.cert';
@@ -71,3 +80,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 			}
 	}
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Certificate Authority</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>  
+  <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+</head>
+
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Certificate Authority</a>
+      </div>
+      <div>
+        <ul class="nav navbar-nav">
+        	<li ><a href="#">Home</a></li>
+	        <li><a href="create-csr.php">CSR</a></li>
+	        <li class="active"><a href="signing-ca.php">Sign</a></li>
+	        <li><a href="login.php">Login</a></li> 
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div id="login">        
+    <h1>Form Signing Csr</h1>
+    <form action="" method="POST">
+    	<textarea rows="10" cols="50" name="csr">
+      	</textarea>         
+      	<input type="submit" value="Submit" name="formCa"/>
+    </form>
+  </div>
+
+  <script src='http://codepen.io/assets/libs/fullpage/jquery.js'></script>
+  <script src="js/index.js"></script>
+
+</body>
+</html>
