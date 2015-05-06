@@ -5,16 +5,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     if(isset($_POST['signup']))
       {
         include('db.php');
-        $email=$_POST['email'];
-        $password=$_POST['password'];
-        $sql="INSERT INTO user (username, userpass, usertype) VALUES ('$email','$password','1')";
-        if ($conn->query($sql) === TRUE)
-          echo "New record created successfully";
-        else
-          echo "Error: " . $sql . "<br>" . $conn->error;
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $sql = "INSERT INTO user (username, userpass, usertype) VALUES ('$email','$password','1')";
+        $conn->query($sql);
+      //   if ($conn->query($sql) === TRUE)
+      //     echo "New record created successfully";
+      //   else
+      //     echo "Error: " . $sql . "<br>" . $conn->error;
       }
   }
-
 
 ?>
 
@@ -45,11 +45,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     </div>
     <div>
       <ul class="nav navbar-nav">
-          <li ><a href="#">Home</a></li>
+        <li ><a href="#">Home</a></li>
       </ul>
-      <div class="text-right">
-        <a href="signup.php">Sign Up</a></li>
-      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="index.php">Sign In</a></li>
+      </ul>
     </div>
   </div>
 </nav>

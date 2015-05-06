@@ -6,7 +6,7 @@
       <div>
         <ul class="nav navbar-nav">
         	<li class="<?php if ($page == 'home') echo 'active'; ?>"><a href="#">Home</a></li>
-	        <li class="<?php if ($page == 'csr') echo 'active'; ?>"><a href="create-csr.php">CSR</a></li>
+	        <li class="<?php if ($page == 'csr') echo 'active'; ?>"><a href="req_csr.php">CSR</a></li>
 	        <li class="<?php if ($page == 'sign') echo 'active'; ?>"><a href="sign_csr.php">Sign</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
