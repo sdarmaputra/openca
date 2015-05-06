@@ -9,9 +9,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
         $password=$_POST['password'];
         $sql="INSERT INTO user (username, userpass, usertype) VALUES ('$email','$password','1')";
         if ($conn->query($sql) === TRUE)
-          echo "New record created successfully";
+          echo "<script type='text/javascript'>alert('Sign Up Success');</script>";
         else
-          echo "Error: " . $sql . "<br>" . $conn->error;
+          echo "<script type='text/javascript'>alert('Sign Up Error');</script>";
       }
   }
 
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
           <li ><a href="#">Home</a></li>
       </ul>
       <div class="text-right">
-        <a href="signup.php">Sign Up</a></li>
+        <a href="signup.php">Sign Up</a>
       </div>
     </div>
   </div>
