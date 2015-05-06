@@ -1,4 +1,5 @@
 <?php
+$page = 'sign';
 include('session.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') 
 	{
@@ -6,17 +7,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 			{
 				include('File/X509.php');
 				include('Crypt/RSA.php');
+				include('db.php');
 				if(isset($_POST['csr']))
 					{
-						// $con = mysqli_connect("localhost","root","","csr");
-						// // Check connection
-						// if (mysqli_connect_errno())
-						// 	{
-						// 		echo "Failed to connect to MySQL: " . mysqli_connect_error();
-						// 	}
-
-						// $sql="SELECT pubKey, privKey, signature FROM root where username='root'";
-						// $result_query=mysqli_query($con,$sql);
+						$sql = "SELECT contentpending FROM pending_cert where userpending='$username'";
+						$result_query = $conn->query($sql);
 
 						// // Associative array
 						// $row = mysqli_fetch_array($result_query,MYSQLI_ASSOC);
@@ -93,25 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 </head>
 
 <body>
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#">Certificate Authority</a>
-      </div>
-      <div>
-        <ul class="nav navbar-nav">
-        	<li ><a href="#">Home</a></li>
-	        <li><a href="create-csr.php">CSR</a></li>
-	        <li class="active"><a href="signing-ca.php">Sign</a></li>
-	        <li><a href="logout.php">Logout</a></li>
-            <li><a href="#"><i>Welcome, <?php echo $username; ?></i></a></li>
-          	<li><a href="req_csr.php">CSR</a></li>
-          	<li class="active"><a href="sign_csr.php">Sign</a></li>
-          	<li><a href="login.php">Login</a></li>  
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <?php include('navbar.php'); ?>
 
 	<div id="login">
 		<h1>Form Signing Csr</h1>
