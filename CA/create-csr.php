@@ -1,4 +1,5 @@
 <?php
+$page = 'csr';
 include('session.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') 
   {   
@@ -84,22 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 </head>
 
 <body>
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#">Certificate Authority</a>
-      </div>
-      <div>
-        <ul class="nav navbar-nav">
-          <li ><a href="#">Home</a></li>
-          <li class="active"><a href="create-csr.php">CSR</a></li>
-          <li><a href="signing-ca.php">Sign</a></li>
-          <li><a href="logout.php">Logout</a></li>  
-          <li><a href="#"><i>Welcome, <?php echo $username; ?></i></a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <?php include('navbar.php'); ?>
 
   <div id="login">        
     <h1>Form Request</h1>
