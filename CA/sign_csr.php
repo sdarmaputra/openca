@@ -6,17 +6,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 			{
 				include('File/X509.php');
 				include('Crypt/RSA.php');
+				include('db.php');
 				if(isset($_POST['csr']))
 					{
-						// $con = mysqli_connect("localhost","root","","csr");
-						// // Check connection
-						// if (mysqli_connect_errno())
-						// 	{
-						// 		echo "Failed to connect to MySQL: " . mysqli_connect_error();
-						// 	}
-
-						// $sql="SELECT pubKey, privKey, signature FROM root where username='root'";
-						// $result_query=mysqli_query($con,$sql);
+						$sql = "SELECT contentpending FROM pending_cert where userpending='$username'";
+						$result_query = $conn->query($sql);
 
 						// // Associative array
 						// $row = mysqli_fetch_array($result_query,MYSQLI_ASSOC);
