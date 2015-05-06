@@ -24,15 +24,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 						//echo $row["pubKey"].$row["privKey"].$row["signature"];
 						$CAPrivKey = new Crypt_RSA();
 						$CAPubKey = new Crypt_RSA();
-						$CAPrivKey->loadKey(fopen("C://xampp/htdocs/simple/privatekey.cert", "r"));
-						$CAPubKey->loadKey(fopen("C://xampp/htdocs/simple/publickey.cert", "r"));
+
+						$privatekeyCsr = file_get_contents("privatekey.cert");
+						#$privKey->loadKey($privatekeyCsr);
+						$publickeyCsr = file_get_contents("publickey.cert");
+						#$pubKey->loadKey($publickeyCsr);
+
+						$CAPrivKey->loadKey($privatekeyCsr);
+						$CAPubKey->loadKey($publickeyCsr);
 						#print_r($CAPrivKey);
-						print_r($CAPubKey);
+						#print_r($CAPubKey);
 						$csr = $_POST['csr'];
 
 						$issuer = new File_X509();
 						$issuer->setPrivateKey($CAPrivKey);
-						$ca = $issuer->loadX509(fopen("C://xampp/htdocs/simple/root.cert", "r"));
+						$caroot = file_get_contents("root.cert");
+						$ca = $issuer->loadX509($caroot);
 
 						$subject = new File_X509();
 						$subject->setPublicKey($CAPubKey);
@@ -54,8 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 						// Free result set
 						// mysqli_free_result($result_query);
 						// mysqli_close($con);
-						echo $fileca;
-						$myfile = fopen("ca".'.cert',"w") or die("Unable to open file!");
+						#echo $fileca;
+						$myfile = fopen("caclient".'.cert',"w") or die("Unable to open file!");
 						fwrite($myfile, $fileca);
 						fclose($myfile);
 						$file = "ca".'.cert';
@@ -76,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Case</title>
+  <title>Certificate Authority</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">

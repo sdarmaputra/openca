@@ -12,6 +12,8 @@ $CAPrivKey->loadKey($privatekey);
 $pubKey = new Crypt_RSA();
 $pubKey->loadKey($publickey);
 $pubKey->setPublicKey();
+#print_r($pubKey);
+#echo "\r\n\r\n";
 
 #echo "the private key for the CA cert (can be discarded):\r\n\r\n";
 #echo $privatekey;
@@ -41,17 +43,14 @@ $result = $x509->sign($issuer, $subject);
 #echo "the CA cert to be imported into the browser is as follows:\r\n\r\n";
 #echo $x509->saveX509($result);
 #echo "\r\n\r\n";
-$filename = '../simple/privatekey.cert';
-$filename1 = '../simple/root.cert';
-$filename2 = '../simple/publickey.cert';
 
-$myfile = fopen($filename,"w") or die("Unable to open file!");
+$myfile = fopen("privatekey.cert","w") or die("Unable to open file!");
 fwrite($myfile, $CAPrivKey);
 
-$myfile1 = fopen($filename1,"w") or die("Unable to open file!");
+$myfile1 = fopen("root.cert","w") or die("Unable to open file!");
 fwrite($myfile1, $x509->saveX509($result));
 
-$myfile2 = fopen($filename2,"w") or die("Unable to open file!");
+$myfile2 = fopen("publickey.cert","w") or die("Unable to open file!");
 fwrite($myfile2, $pubKey);
 
 fclose($myfile);
@@ -61,10 +60,13 @@ fclose($myfile2);
 // create private key / x.509 cert for stunnel / website
 $privKey = new Crypt_RSA();
 extract($privKey->createKey());
-$privKey->loadKey($privatekey);
+$privatekeyCsr = file_get_contents("privatekey.cert");
+$privKey->loadKey($privatekeyCsr);
+#print_r($privKey);
 
 $pubKey = new Crypt_RSA();
-$pubKey->loadKey($publickey);
+$publickeyCsr = file_get_contents("publickeyCsr");
+$pubKey->loadKey($publickeyCsr);
 $pubKey->setPublicKey();
 
 $subject = new File_X509();
@@ -78,9 +80,12 @@ $issuer->setDN($CASubject);
 
 $x509 = new File_X509();
 $result = $x509->sign($issuer, $subject);
-echo "the stunnel.pem contents are as follows:\r\n\r\n";
+#echo "the stunnel.pem contents are as follows:\r\n\r\n";
 #echo $privKey->getPrivateKey();
-echo "\r\n";
+#echo "\r\n";
 #echo $x509->saveX509($result);
-echo "\r\n";
+$myfile3 = fopen("client.cert","w") or die("Unable to open file!");
+fwrite($myfile3, $x509->saveX509($result));
+fclose($myfile3);
+#echo "\r\n";
 ?>

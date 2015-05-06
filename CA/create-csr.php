@@ -22,6 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
             $x509 = new File_X509();
             $x509->setPrivateKey($privKey);
 
+            $pubKey = new Crypt_RSA();
+            $pubKey->loadKey($publickey);
+            $pubKey->setPublicKey();
+
             $x509->setDNProp('id-at-countryName', $countryName);
             $x509->setDNProp('id-at-stateOrProvinceName', $stateOrProvinceName);
             $x509->setDNProp('id-at-localityName', $localityName);
@@ -32,23 +36,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
             $resultcsr = $x509->signCSR();
             
             $filecsr = $x509->saveCSR($resultcsr);
-            $myfile = fopen("$organizationName.pem","w") or die("Unable to open file!");
+            $myfile = fopen("$organizationName.csr","w") or die("Unable to open file!");
             fwrite($myfile, $filecsr);
             fclose($myfile);
+
+            $myfile1 = fopen("$organizationName.pem","w") or die("Unable to open file!");
+            fwrite($myfile1, $pubKey);
+            fclose($myfile1);
             
-            $file = "$organizationName.pem";
-              if (file_exists($file)) 
-              {
-                header('Content-Description: File Transfer');
-                header('Content-Type: application/octet-stream');
-                header('Content-Disposition: attachment; filename='.basename($file));
-                header('Expires: 0');
-                header('Cache-Control: must-revalidate');
-                header('Pragma: public');
-                header('Content-Length: ' . filesize($file));
-                readfile($file);
-                exit;
-              }
+            // $file = "$organizationName.csr";
+            //   if (file_exists($file)) 
+            //   {
+            //     header('Content-Description: File Transfer');
+            //     header('Content-Type: application/octet-stream');
+            //     header('Content-Disposition: attachment; filename='.basename($file));
+            //     header('Expires: 0');
+            //     header('Cache-Control: must-revalidate');
+            //     header('Pragma: public');
+            //     header('Content-Length: ' . filesize($file));
+            //     readfile($file);
+            //     exit;
+            //   }
           }
         
         else{
@@ -65,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Case</title>
+  <title>Certificate Authority</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
