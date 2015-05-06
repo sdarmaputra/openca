@@ -1,79 +1,55 @@
 <?php
 $page = 'create_ca';
-include('session.php');
-if ($_SERVER['REQUEST_METHOD'] == 'POST') 
-  {
-    if(isset($_POST['formCa']))
-      {
-        include('File/X509.php');
-        include('Crypt/RSA.php');
-        include('db.php');
-        if(isset($_POST['csr']))
-          {
-            $sql = "SELECT contentpending FROM pending_cert where userpending='$username'";
-            $result_query = $conn->query($sql);
+#include('session.php');
+include('File/X509.php');
+include('Crypt/RSA.php');
+include('db.php');
+       
+$sql = "SELECT userpending, contentpending FROM pending_cert where signed=0";
+$result_query = $conn->query($sql);
 
-            // // Associative array
-            // $row = mysqli_fetch_array($result_query,MYSQLI_ASSOC);
+// // Associative array
+$row = mysqli_fetch_array($result_query, MYSQLI_ASSOC);
 
-            //echo $row["pubKey"].$row["privKey"].$row["signature"];
-            $CAPrivKey = new Crypt_RSA();
-            $CAPubKey = new Crypt_RSA();
+//echo $row["pubKey"].$row["privKey"].$row["signature"];
+$CAPrivKey = new Crypt_RSA();
+$CAPubKey = new Crypt_RSA();
 
-            $privatekeyCsr = file_get_contents("root_ca_privatekey.cert");
-            #$privKey->loadKey($privatekeyCsr);
-            $publickeyCsr = file_get_contents("root_ca_publickey.cert");
-            #$pubKey->loadKey($publickeyCsr);
+$privatekeyCsr = file_get_contents("root_ca_privatekey.cert");
+#$privKey->loadKey($privatekeyCsr);
+$publickeyCsr = file_get_contents("root_ca_publickey.cert");
+#$pubKey->loadKey($publickeyCsr);
 
-            $CAPrivKey->loadKey($privatekeyCsr);
-            $CAPubKey->loadKey($publickeyCsr);
-            #print_r($CAPrivKey);
-            #print_r($CAPubKey);
-            $csr = $_POST['csr'];
+$CAPrivKey->loadKey($privatekeyCsr);
+$CAPubKey->loadKey($publickeyCsr);
 
-            $issuer = new File_X509();
-            $issuer->setPrivateKey($CAPrivKey);
-            $caroot = file_get_contents("root_ca.cert");
-            $ca = $issuer->loadX509($caroot);
+echo $csr = $row["contentpending"];
 
-            $subject = new File_X509();
-            $subject->setPublicKey($CAPubKey);
-            $subject->loadCSR($csr);
+$issuer = new File_X509();
+$issuer->setPrivateKey($CAPrivKey);
+$caroot = file_get_contents("root_ca.cert");
+$issuer->loadX509($caroot);
 
-            $x509 = new File_X509();
-            $x509->setStartDate('-1 month');
-            $x509->setEndDate('+1 year');
-            // $sql = "SELECT pubKey, privKey, signature FROM root where username='root'";
-            // $result_query = mysqli_query($con,$sql);
+$subject = new File_X509();
+$subject->setPublicKey($CAPubKey);
+$subject->loadCSR($csr);
 
-            // // Associative array
-            // $row = mysqli_fetch_array($result_query,MYSQLI_ASSOC);
-            //$serial = 'FF';
-            $x509->setSerialNumber(chr(1));
-            $result = $x509->sign($issuer, $subject);
-            $fileca = $x509->saveX509($result);
+$x509 = new File_X509();
+$x509->setStartDate('-1 month');
+$x509->setEndDate('+1 year');
 
-            // Free result set
-            // mysqli_free_result($result_query);
-            // mysqli_close($con);
-            #echo $fileca;
-            $myfile = fopen("caclient".'.cert',"w") or die("Unable to open file!");
-            fwrite($myfile, $fileca);
-            fclose($myfile);
-          }
+//$serial = 'FF';
+$x509->setSerialNumber(chr(1));
+$result = $x509->sign($issuer, $subject);
+$fileca = $x509->saveX509($result);
 
-        else if(isset($_POST['fileCsr'])){
-          echo "error[1]";
-        }
-      }
-
-      else{
-        echo "error[2]";
-      }
-  }
-
+echo $fileca;
+$myfile = fopen("caclient_new.cert","w") or die("Unable to open file!");
+fwrite($myfile, $fileca);
+fclose($myfile);
 ?>
-<!DOCTYPE html>
+
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <title>Certificate Authority</title>
@@ -95,34 +71,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       <div>
         <ul class="nav navbar-nav">
         	<li ><a href="#">Home</a></li>
-	        <li><a href="create-csr.php">CSR</a></li>
-	        <li class="active"><a href="signing-ca.php">Sign</a></li>
-	        <li><a href="logout.php">Logout</a></li>
-            <li><a href="#"><i>Welcome, <?php echo $username; ?></i></a></li>
-          	<li><a href="req_csr.php">CSR</a></li>
-          	<li class="active"><a href="sign_csr.php">Sign</a></li>
-          	<li><a href="login.php">Login</a></li>  
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#"><i>Welcome, <?php echo $username; ?></i></a></li>
+          <li><a href="logout.php">Logout</a></li>
         </ul>
       </div>
     </div>
   </nav>
 
-	<div id="login">
-		<h1>Form Signing Csr</h1>
-		<form action="" method="POST">
-			<div class="form-group">
-				<h4>Input CSR</h4>
-					<textarea class="form-control" rows="10" name="csr">
-					</textarea>
-				<h4>or Upload CSR</h4>
-					<input type="file" class="file" name="fileCsr">
-			</div>
-			<input type="submit" value="Submit" name="formCa"/>
-		</form>
-	</div>
+	<div>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>User</th>
+          <th>Date Request</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>John</td>
+          <td>Doe</td>
+          <td>john@example.com</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <script src='http://codepen.io/assets/libs/fullpage/jquery.js'></script>
   <script src="js/index.js"></script>
 
 </body>
-</html>
+</html> -->
