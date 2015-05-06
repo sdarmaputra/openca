@@ -5,13 +5,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
   {
     if(isset($_POST['formCa']))
       {
-        include('db.php');
-        $content = $_POST['csr'];
-        $sql = "INSERT INTO pending_cert (userpending, datepending, contentpending, signed) VALUES (a,a, $content,0)";
-        if ($conn->query($sql) === TRUE)
-          echo "New record created successfully";
-        else
-          echo "Error: " . $sql . "<br>" . $conn->error;
+    	include('db.php');
+		$content = $_POST['csr'];
+		$user = $_SESSION['username'];
+		$sql = "INSERT INTO pending_cert (userpending, contentpending, signed) VALUES ('$user', '$content', 0)";
+		if ($conn->query($sql) === TRUE)
+			echo "New record created successfully";
+		else
+			echo "Error: " . $sql . "<br>" . $conn->error;		
       }
   }
 ?>
