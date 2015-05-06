@@ -5,7 +5,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     if(isset($_POST['signup']))
       {
         include('db.php');
-<<<<<<< HEAD
         $email=$_POST['email'];
         $password=$_POST['password'];
         $sql="INSERT INTO user (username, userpass, usertype) VALUES ('$email','$password','1')";
@@ -13,19 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
           echo "<script type='text/javascript'>alert('Sign Up Success');</script>";
         else
           echo "<script type='text/javascript'>alert('Sign Up Error');</script>";
-=======
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $sql = "INSERT INTO user (username, userpass, usertype) VALUES ('$email','$password','1')";
-        $conn->query($sql);
-      //   if ($conn->query($sql) === TRUE)
-      //     echo "New record created successfully";
-      //   else
-      //     echo "Error: " . $sql . "<br>" . $conn->error;
->>>>>>> 4dfdda3154bc061e45fb75532fddaf63d22ba78c
       }
   }
-
 ?>
 
 <html lang="en">
@@ -60,12 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       <ul class="nav navbar-nav navbar-right">
         <li><a href="index.php">Sign In</a></li>
       </ul>
-<<<<<<< HEAD
-      <div class="text-right">
-        <a href="signup.php">Sign Up</a>
-      </div>
-=======
->>>>>>> 4dfdda3154bc061e45fb75532fddaf63d22ba78c
     </div>
   </div>
 </nav>

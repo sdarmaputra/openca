@@ -35,7 +35,7 @@
   </div>
 </nav>
 
-<div id="login-page">   
+<div id="login">   
   <h1>Please Login!</h1>
     <form action="logincheck.php" method="POST">
       <input type="email" placeholder="Email" name="email"/>        
