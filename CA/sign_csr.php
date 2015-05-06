@@ -25,9 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 						$CAPrivKey = new Crypt_RSA();
 						$CAPubKey = new Crypt_RSA();
 
-						$privatekeyCsr = file_get_contents("privatekey.cert");
+						$privatekeyCsr = file_get_contents("root_ca_privatekey.cert");
 						#$privKey->loadKey($privatekeyCsr);
-						$publickeyCsr = file_get_contents("publickey.cert");
+						$publickeyCsr = file_get_contents("root_ca_publickey.cert");
 						#$pubKey->loadKey($publickeyCsr);
 
 						$CAPrivKey->loadKey($privatekeyCsr);
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 
 						$issuer = new File_X509();
 						$issuer->setPrivateKey($CAPrivKey);
-						$caroot = file_get_contents("root.cert");
+						$caroot = file_get_contents("root_ca.cert");
 						$ca = $issuer->loadX509($caroot);
 
 						$subject = new File_X509();
@@ -53,8 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 
 						// // Associative array
 						// $row = mysqli_fetch_array($result_query,MYSQLI_ASSOC);
-						$serial = '12';
-						$x509->setSerialNumber(chr($serial));
+						//$serial = 'FF';
+						$x509->setSerialNumber(chr(1));
 						$result = $x509->sign($issuer, $subject);
 						$fileca = $x509->saveX509($result);
 
@@ -65,21 +65,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 						$myfile = fopen("caclient".'.cert',"w") or die("Unable to open file!");
 						fwrite($myfile, $fileca);
 						fclose($myfile);
-						$file = "ca".'.cert';
-
 					}
 
-				else{
+				else if(isset($_POST['fileCsr'])){
 					echo "error[1]";
 				}
-
 			}
 
 			else{
 				echo "error[2]";
 			}
 	}
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -102,22 +101,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       <div>
         <ul class="nav navbar-nav">
         	<li ><a href="#">Home</a></li>
-	        <li><a href="create-csr.php">CSR</a></li>
-	        <li class="active"><a href="signing-ca.php">Sign</a></li>
-	        <li><a href="login.php">Login</a></li> 
+          	<li><a href="req_csr.php">CSR</a></li>
+          	<li class="active"><a href="sign_csr.php">Sign</a></li>
+          	<li><a href="login.php">Login</a></li>  
         </ul>
       </div>
     </div>
   </nav>
 
-  <div id="login">        
-    <h1>Form Signing Csr</h1>
-    <form action="" method="POST">
-    	<textarea rows="10" cols="50" name="csr">
-      	</textarea>         
-      	<input type="submit" value="Submit" name="formCa"/>
-    </form>
-  </div>
+	<div id="login">
+		<h1>Form Signing Csr</h1>
+		<form action="" method="POST">
+			<div class="form-group">
+				<h4>Input CSR</h4>
+					<textarea class="form-control" rows="10" name="csr">
+					</textarea>
+				<h4>or Upload CSR</h4>
+					<input type="file" class="file" name="fileCsr">
+			</div>
+			<input type="submit" value="Submit" name="formCa"/>
+		</form>
+	</div>
 
   <script src='http://codepen.io/assets/libs/fullpage/jquery.js'></script>
   <script src="js/index.js"></script>

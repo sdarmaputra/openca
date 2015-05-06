@@ -16,11 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
             $commonName = $_POST['commonName'];         
             $emailAddress = $_POST['emailAddress'];
         
-            // $privKey = new Crypt_RSA();
-            // extract($privKey->createKey());
-            // $privKey->loadKey($privatekey);
-            // $x509 = new File_X509();
-            // $x509->setPrivateKey($privKey);
+            $privKey = new Crypt_RSA();
+            extract($privKey->createKey());
+            $privKey->loadKey($privatekey);
+            $x509 = new File_X509();
+            $x509->setPrivateKey($privKey);
 
             // $pubKey = new Crypt_RSA();
             // $pubKey->loadKey($publickey);
@@ -92,9 +92,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       </div>
       <div>
         <ul class="nav navbar-nav">
-          <li ><a href="#">Home</a></li>
-          <li class="active"><a href="create-csr.php">CSR</a></li>
-          <li><a href="signing-ca.php">Sign</a></li>
+          <li><a href="#">Home</a></li>
+          <li class="active"><a href="req_csr.php">CSR</a></li>
+          <li><a href="sign_csr.php">Sign</a></li>
           <li><a href="login.php">Login</a></li>  
         </ul>
       </div>
@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
   </nav>
 
   <div id="login">        
-    <h1>Form Request</h1>
+    <h1>Form Certificate Request</h1>
     <div class="form-group">
       <form action="" method="POST">
         <div class="form-group">

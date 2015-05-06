@@ -27,9 +27,9 @@
     <div>
       <ul class="nav navbar-nav">
           <li ><a href="#">Home</a></li>
-          <li><a href="create-csr.php">CSR</a></li>
-          <li><a href="signing-ca.php">Sign</a></li>
-          <li class="active"><a href="login.php">Login</a></li> 
+          <li><a href="req_csr.php">CSR</a></li>
+          <li><a href="sign_csr.php">Sign</a></li>
+          <li class="active"><a href="login.php">Login</a></li>  
       </ul>
     </div>
   </div>
