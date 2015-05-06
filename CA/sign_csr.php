@@ -114,8 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		<form action="" method="POST">
 			<div class="form-group">
 				<h4>Input CSR</h4>
-					<textarea class="form-control" rows="10" name="csr">
-					</textarea>
+					<!-- <textarea class="form-control" rows="10" name="csr">
+					</textarea> -->
 				<h4>or Upload CSR</h4>
 					<input type="file" class="file" name="fileCsr">
 			</div>
