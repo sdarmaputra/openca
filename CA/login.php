@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<?php $page='login'; include('session.php'); ?>
 <html lang="en">
 <head>
   <title>Certificate Authority</title>
@@ -34,12 +35,12 @@
     </div>
   </div>
 </nav>
-
 <div id="login">   
   <h1>Please Login!</h1>
-    <form>
-      <input type="email" placeholder="Email" />        
-      <input type="password" placeholder="Password" />          
+    <?php echo $username;?>
+    <form action="logincheck.php" method="POST">
+      <input type="email" placeholder="Email" name="email"/>        
+      <input type="password" placeholder="Password" name="password"/>          
       <input type="submit" value="Log in" />      
     </form>
 </div>
