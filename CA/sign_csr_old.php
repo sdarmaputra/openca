@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
             #$pubKey->loadKey($publickeyCsr);            
             $CAPubKey->loadKey($publickeyCsr);
             
-            $csr = $_POST['csr'];
+            $csrca = $_POST['csr'];
 
             $issuer = new File_X509();
             $issuer->setPrivateKey($CAPrivKey);
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 
             $subject = new File_X509();
             $subject->setPublicKey($CAPubKey);
-            $subject->loadCSR($csr);
+            $subject->loadCSR($csrca);
 
             $x509 = new File_X509();
             $x509->setStartDate('-1 month');

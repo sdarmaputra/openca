@@ -23,7 +23,7 @@ $publickeyCsr = file_get_contents("root_ca_publickey.cert");
 $CAPrivKey->loadKey($privatekeyCsr);
 $CAPubKey->loadKey($publickeyCsr);
 
-echo $csr = $row["contentpending"];
+$csr = $row["contentpending"];
 
 $issuer = new File_X509();
 $issuer->setPrivateKey($CAPrivKey);
@@ -43,7 +43,7 @@ $x509->setSerialNumber(chr(1));
 $result = $x509->sign($issuer, $subject);
 $fileca = $x509->saveX509($result);
 
-echo $fileca;
+#echo $fileca;
 $myfile = fopen("caclient_new.cert","w") or die("Unable to open file!");
 fwrite($myfile, $fileca);
 fclose($myfile);

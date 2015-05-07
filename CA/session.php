@@ -7,6 +7,7 @@ if ($_SESSION['valid']){
     if (isset($page) && $page == 'login') header("location: index-user.php");
 }
 else {
+	$_SESSION['valid'] = false;
     $userid = NULL;
     $username = NULL;
     $usertype = NULL;

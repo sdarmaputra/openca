@@ -35,47 +35,55 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 			            #$pubKey->loadKey($publickeyCsr);            
 			            $CAPubKey->loadKey($publickeyCsr);
 			            
-			            $csr = $_POST['csr'];
+			            $csrca = $_POST['csr'];
 
 			            $issuer = new File_X509();
 			            $issuer->setPrivateKey($CAPrivKey);
 			            $caroot = file_get_contents("root_ca.cert");
-			            $issuer->loadX509($caroot);
+			            $ca = $issuer->loadX509($caroot);
 
 			            $subject = new File_X509();
 			            $subject->setPublicKey($CAPubKey);
-			            $subject->loadCSR($csr);
+			            $subject->loadCSR($csrca);
+			            #print_r($subject);
 
 			            $x509 = new File_X509();
+			            #$x509->makeCA();
 			            $x509->setStartDate('-1 month');
 			            $x509->setEndDate('+1 year');
 			            $x509->setSerialNumber(chr(1));
 			            $result = $x509->sign($issuer, $subject);
+			            #print_r($result);
 			            $fileca = $x509->saveX509($result);
 
-			            $myfile = fopen("caclient_old.cert","w") or die("Unable to open file!");
+			            #echo $fileca;
+			            $myfile = fopen("caclient_new.cert","w") or die("Unable to open file!");
 			            fwrite($myfile, $fileca);
 			            fclose($myfile);
 
-			            $file = "caclient_old.cert";
-		              	if (file_exists($file)) 
-		                	{
-			                  header('Content-Description: File Transfer');
-			                  header('Content-Type: application/octet-stream');
-			                  header('Content-Disposition: attachment; filename='.basename($file));
-			                  header('Expires: 0');
-			                  header('Cache-Control: must-revalidate');
-			                  header('Pragma: public');
-			                  header('Content-Length: ' . filesize($file));
-			                  readfile($file);
-			                  exit;
-                			}
+			            // $file = "caclient_old.cert";
+		             //  	if (file_exists($file)) 
+		             //    	{
+			            //       header('Content-Description: File Transfer');
+			            //       header('Content-Type: application/octet-stream');
+			            //       header('Content-Disposition: attachment; filename='.basename($file));
+			            //       header('Expires: 0');
+			            //       header('Cache-Control: must-revalidate');
+			            //       header('Pragma: public');
+			            //       header('Content-Length: ' . filesize($file));
+			            //       readfile($file);
+			            //       exit;
+               //  			}
         			}
-        		else 
+        		else{
         			echo "error[1]";
+        		} 
+        			
           	}
-        else 
-      		echo "error[2]";
+        else{
+        	echo "error[2]";
+        } 
+      		
 	}
       
 ?>
@@ -101,8 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		<form action="" method="POST">
 			<div class="form-group">
 				<h4>Input CSR</h4>
-					<textarea class="form-control" rows="10" name="csr">
-					</textarea>
+					<textarea class="form-control" rows="10" name="csr"></textarea>
 				<h4>or Upload CSR</h4>
 					<input type="file" class="file" name="fileCsr">
 			</div>
