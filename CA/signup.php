@@ -1,5 +1,21 @@
 <!DOCTYPE html>
-<?php $page='login'; include('session.php'); ?>
+<?php 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+  {   
+    if(isset($_POST['signup']))
+      {
+        include('db.php');
+        $email=$_POST['email'];
+        $password=$_POST['password'];
+        $sql="INSERT INTO user (username, userpass, usertype) VALUES ('$email','$password','1')";
+        if ($conn->query($sql) === TRUE)
+          echo "<script type='text/javascript'>alert('Sign Up Success');</script>";
+        else
+          echo "<script type='text/javascript'>alert('Sign Up Error');</script>";
+      }
+  }
+?>
+
 <html lang="en">
 <head>
   <title>Certificate Authority</title>
@@ -19,6 +35,7 @@
 </head>
 
 <body>
+
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -26,18 +43,20 @@
     </div>
     <div>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="signup.php">Sign Up</a></li>
+        <li><a href="index.php">Sign In</a></li>
       </ul>
     </div>
   </div>
 </nav>
 
 <div id="login">   
-  <h1>Please Login!</h1>
-    <form action="logincheck.php" method="POST">
+  <h1>Sign Up</h1>
+    <form action="" method="POST">
+      <div class="form-group">
       <input type="email" placeholder="Email" name="email"/>        
-      <input type="password" placeholder="Password" name="password"/>          
-      <input type="submit" value="Log in" />      
+      <input type="password" placeholder="Password" name="password"/>
+      <input type="submit" name="signup" />      
+      </div>
     </form>
 </div>
 

@@ -1,5 +1,6 @@
 <?php
-
+$page = 'csr';
+include('session.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') 
   {   
     if(isset($_POST['formCsr']))
@@ -85,21 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 </head>
 
 <body>
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#">Certificate Authority</a>
-      </div>
-      <div>
-        <ul class="nav navbar-nav">
-          <li><a href="#">Home</a></li>
-          <li class="active"><a href="req_csr.php">CSR</a></li>
-          <li><a href="sign_csr.php">Sign</a></li>
-          <li><a href="login.php">Login</a></li>  
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <?php include('navbar.php'); ?>
 
   <div id="login">        
     <h1>Form Certificate Request</h1>

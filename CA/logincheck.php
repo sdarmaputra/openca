@@ -10,7 +10,10 @@ if ($u[2] == $pass){
     $_SESSION['userid'] = $u[0];
     $_SESSION['username'] = $u[1];
     $_SESSION['usertype'] = $u[3];
-    if ($_SESSION['usertype'] == 1) header("location: create-csr.php");
+    if ($_SESSION['usertype'] == 1) header("location: req_csr.php");
+    elseif ($_SESSION['usertype'] == 0) {
+    	header("location: create_ca.php");
+    }
 }
-else header("location: login.php");
+else header("location: index.php");
 ?>

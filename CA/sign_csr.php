@@ -1,83 +1,83 @@
 <?php
+// $page = 'sign';
+// include('session.php');
+// if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+//   {
+//     if(isset($_POST['formCa']))
+//       {
+//     	include('db.php');
+// 		$content = $_POST['csr'];
+// 		$user = $_SESSION['username'];
+// 		$sql = "INSERT INTO pending_cert (userpending, contentpending, signed) VALUES ('$user', '$content', 0)";
+// 		if ($conn->query($sql) === TRUE)
+// 			echo "<script type='text/javascript'>alert('Submit CSR Success');</script>";
+//         else
+//           echo "<script type='text/javascript'>alert('Submit CSR Error');</script>";		
+//       }
+//   }
 $page = 'sign';
 include('session.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') 
 	{
-		if(isset($_POST['formCa']))
-			{
-				include('File/X509.php');
-				include('Crypt/RSA.php');
-				if(isset($_POST['csr']))
-					{
-						// $con = mysqli_connect("localhost","root","","csr");
-						// // Check connection
-						// if (mysqli_connect_errno())
-						// 	{
-						// 		echo "Failed to connect to MySQL: " . mysqli_connect_error();
-						// 	}
+    	if(isset($_POST['formCa']))
+      		{
+        		include('File/X509.php');
+		        include('Crypt/RSA.php');
+		        if(isset($_POST['csr']))
+		        	{
+			            $CAPrivKey = new Crypt_RSA();
+			            $privatekeyCsr = file_get_contents("root_ca_privatekey.cert");
+			            #$privKey->loadKey($privatekeyCsr);
+			            $CAPrivKey->loadKey($privatekeyCsr);
 
-						// $sql="SELECT pubKey, privKey, signature FROM root where username='root'";
-						// $result_query=mysqli_query($con,$sql);
+			            $CAPubKey = new Crypt_RSA();            
+			            $publickeyCsr = file_get_contents("root_ca_publickey.cert");
+			            #$pubKey->loadKey($publickeyCsr);            
+			            $CAPubKey->loadKey($publickeyCsr);
+			            
+			            $csr = $_POST['csr'];
 
-						// // Associative array
-						// $row = mysqli_fetch_array($result_query,MYSQLI_ASSOC);
+			            $issuer = new File_X509();
+			            $issuer->setPrivateKey($CAPrivKey);
+			            $caroot = file_get_contents("root_ca.cert");
+			            $issuer->loadX509($caroot);
 
-						//echo $row["pubKey"].$row["privKey"].$row["signature"];
-						$CAPrivKey = new Crypt_RSA();
-						$CAPubKey = new Crypt_RSA();
+			            $subject = new File_X509();
+			            $subject->setPublicKey($CAPubKey);
+			            $subject->loadCSR($csr);
 
-						$privatekeyCsr = file_get_contents("root_ca_privatekey.cert");
-						#$privKey->loadKey($privatekeyCsr);
-						$publickeyCsr = file_get_contents("root_ca_publickey.cert");
-						#$pubKey->loadKey($publickeyCsr);
+			            $x509 = new File_X509();
+			            $x509->setStartDate('-1 month');
+			            $x509->setEndDate('+1 year');
+			            $x509->setSerialNumber(chr(1));
+			            $result = $x509->sign($issuer, $subject);
+			            $fileca = $x509->saveX509($result);
 
-						$CAPrivKey->loadKey($privatekeyCsr);
-						$CAPubKey->loadKey($publickeyCsr);
-						#print_r($CAPrivKey);
-						#print_r($CAPubKey);
-						$csr = $_POST['csr'];
+			            $myfile = fopen("caclient_old.cert","w") or die("Unable to open file!");
+			            fwrite($myfile, $fileca);
+			            fclose($myfile);
 
-						$issuer = new File_X509();
-						$issuer->setPrivateKey($CAPrivKey);
-						$caroot = file_get_contents("root_ca.cert");
-						$ca = $issuer->loadX509($caroot);
-
-						$subject = new File_X509();
-						$subject->setPublicKey($CAPubKey);
-						$subject->loadCSR($csr);
-
-						$x509 = new File_X509();
-						$x509->setStartDate('-1 month');
-						$x509->setEndDate('+1 year');
-						// $sql = "SELECT pubKey, privKey, signature FROM root where username='root'";
-						// $result_query = mysqli_query($con,$sql);
-
-						// // Associative array
-						// $row = mysqli_fetch_array($result_query,MYSQLI_ASSOC);
-						//$serial = 'FF';
-						$x509->setSerialNumber(chr(1));
-						$result = $x509->sign($issuer, $subject);
-						$fileca = $x509->saveX509($result);
-
-						// Free result set
-						// mysqli_free_result($result_query);
-						// mysqli_close($con);
-						#echo $fileca;
-						$myfile = fopen("caclient".'.cert',"w") or die("Unable to open file!");
-						fwrite($myfile, $fileca);
-						fclose($myfile);
-					}
-
-				else if(isset($_POST['fileCsr'])){
-					echo "error[1]";
-				}
-			}
-
-			else{
-				echo "error[2]";
-			}
+			            $file = "caclient_old.cert";
+		              	if (file_exists($file)) 
+		                	{
+			                  header('Content-Description: File Transfer');
+			                  header('Content-Type: application/octet-stream');
+			                  header('Content-Disposition: attachment; filename='.basename($file));
+			                  header('Expires: 0');
+			                  header('Cache-Control: must-revalidate');
+			                  header('Pragma: public');
+			                  header('Content-Length: ' . filesize($file));
+			                  readfile($file);
+			                  exit;
+                			}
+        			}
+        		else 
+        			echo "error[1]";
+          	}
+        else 
+      		echo "error[2]";
 	}
-
+      
 ?>
 
 <!DOCTYPE html>
@@ -101,8 +101,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		<form action="" method="POST">
 			<div class="form-group">
 				<h4>Input CSR</h4>
-					<!-- <textarea class="form-control" rows="10" name="csr">
-					</textarea> -->
+					<textarea class="form-control" rows="10" name="csr">
+					</textarea>
 				<h4>or Upload CSR</h4>
 					<input type="file" class="file" name="fileCsr">
 			</div>
