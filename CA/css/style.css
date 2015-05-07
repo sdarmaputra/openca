@@ -25,13 +25,17 @@ body{
   background:#2288bb;
 }
 
-#login{
+#login, #login-page{
   width:400px;
   margin:0 auto;
   margin-top:8px;
   margin-bottom:2%;
   transition:opacity 1s;
   -webkit-transition:opacity 1s;
+}
+
+#login-page{
+  margin-top:20%;
 }
 
 #triangle{
@@ -43,7 +47,7 @@ body{
   margin:0 auto;
 }
 
-#login h1{
+#login h1, #login-page h1{
   background:#3399cc;
   padding:20px 0;
   font-size:140%;

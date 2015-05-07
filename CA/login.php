@@ -20,7 +20,7 @@
 
 <body>
 
-<div id="login">   
+<div id="login-page">   
   <h1>Please Login!</h1>
     <form action="logincheck.php" method="POST">
       <input type="email" placeholder="Email" name="email"/>        
