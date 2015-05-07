@@ -1,3 +1,7 @@
+<?php
+    include('db.php');
+    include('session.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,22 +15,81 @@
 </head>
 
 <body>
-
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#">Certificate Authority</a>
+<?php 
+    $page='home'; include('navbar.php');
+?>
+  <div class="container-fluid">
+      <!-- pending certificate -->
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3>Pending Certificate(s)</h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td>#</td>
+                        <td>Submit Date</td>
+                        <td>Content</td>
+                    </tr>
+                </thead>
+                <tbody>
+        <?php
+            $pending = mysqli_query($conn, "SELECT * FROM pending_cert WHERE userpending='".$username."' AND signed=0");
+            $pendingc = 0;
+            while ($row = mysqli_fetch_row($pending)){
+        ?>
+                    <tr>
+                        <td><?php echo $pendingc+1; ?></td>
+                        <td><?php echo $row[2] ?></td>
+                        <td><?php echo $row[3] ?></td>
+                    </tr>
+        <?php
+                $pendingc++;
+            }
+        ?>          
+                </tbody>
+            </table>
+            <?php if ($pendingc == 0) echo "Empty"; ?>
+        </div>
       </div>
-      <div>
-        <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Home</a></li>
-          <li><a href="req_csr.php">CSR</a></li>
-          <li><a href="sign_csr.php">Sign</a></li>
-          <li><a href="login.php">Login</a></li>         
-        </ul>
+      <!-- /pending certificate -->
+      
+      <!-- signed certificate -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3>Signed Certificate(s)</h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td>#</td>
+                        <td>Signed Date</td>
+                        <td>Content</td>
+                    </tr>
+                </thead>
+                <tbody>
+        <?php
+            $signed = mysqli_query($conn, "SELECT * FROM signed_cert WHERE usersigned='".$username."' AND active=1");
+            $signedc = 0;
+            while ($row = mysqli_fetch_row($signed)){
+        ?>
+                    <tr>
+                        <td><?php echo $signed+1; ?></td>
+                        <td><?php echo $row[2] ?></td>
+                        <td><?php echo $row[3] ?></td>
+                    </tr>
+        <?php
+                $signed++;
+            }
+        ?>          
+                </tbody>
+            </table>
+            <?php if ($signedc == 0) echo "Empty"; ?>
+        </div>
       </div>
+      <!-- /signed certificate -->
     </div>
-  </nav>
-
 </body>
 </html>

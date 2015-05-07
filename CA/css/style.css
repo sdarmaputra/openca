@@ -88,3 +88,14 @@ input[type="submit"]{
 input[type="submit"]:hover{
   background:#2288bb;
 }
+
+.panel-default{
+    border-color: #3399cc;
+    border-radius: 0px;
+}
+
+.panel-default .panel-heading{
+    background: #3399cc;
+    border-radius: 0px;
+    color: #fff;
+}
