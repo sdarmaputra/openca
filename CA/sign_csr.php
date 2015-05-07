@@ -102,12 +102,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
         <ul class="nav navbar-nav">
         	<li ><a href="#">Home</a></li>
 	        <li><a href="create-csr.php">CSR</a></li>
-	        <li class="active"><a href="signing-ca.php">Sign</a></li>
+	        <li class="active"><a href="sign_csr.php">Sign</a></li>
 	        <li><a href="logout.php">Logout</a></li>
             <li><a href="#"><i>Welcome, <?php echo $username; ?></i></a></li>
-          	<li><a href="req_csr.php">CSR</a></li>
-          	<li class="active"><a href="sign_csr.php">Sign</a></li>
-          	<li><a href="login.php">Login</a></li>  
         </ul>
       </div>
     </div>

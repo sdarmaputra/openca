@@ -20,24 +20,8 @@
 
 <body>
 
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Certificate Authority</a>
-    </div>
-    <div>
-      <ul class="nav navbar-nav">
-          <li ><a href="#">Home</a></li>
-          <li><a href="req_csr.php">CSR</a></li>
-          <li><a href="sign_csr.php">Sign</a></li>
-          <li class="active"><a href="login.php">Login</a></li>  
-      </ul>
-    </div>
-  </div>
-</nav>
 <div id="login">   
   <h1>Please Login!</h1>
-    <?php echo $username;?>
     <form action="logincheck.php" method="POST">
       <input type="email" placeholder="Email" name="email"/>        
       <input type="password" placeholder="Password" name="password"/>          
