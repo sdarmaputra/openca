@@ -1,5 +1,5 @@
 <?php
-
+include('session.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') 
   {   
     if(isset($_POST['formCsr']))
@@ -94,7 +94,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
           <li ><a href="#">Home</a></li>
           <li class="active"><a href="create-csr.php">CSR</a></li>
           <li><a href="signing-ca.php">Sign</a></li>
-          <li><a href="login.php">Login</a></li>  
+          <li><a href="logout.php">Logout</a></li>  
+          <li><a href="#"><i>Welcome, <?php echo $username; ?></i></a></li>
         </ul>
       </div>
     </div>
