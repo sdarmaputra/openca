@@ -1,5 +1,5 @@
 <?php if ($usertype == 1){ ?>
-<nav class="navbar navbar-default">
+
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -18,4 +18,5 @@
       </div>
     </div>
   </nav>
+
 <?php } ?>
