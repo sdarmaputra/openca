@@ -27,7 +27,7 @@ $subject->setDNProp('id-at-stateOrProvinceName', 'Bali');
 $subject->setDNProp('id-at-localityName', 'Tabanan');
 $subject->setDNProp('id-at-organizationName', 'Lubak-Injin CA');
 $subject->setDNProp('id-at-organizationalUnitName', 'Lubak-Injin Signer');
-$subject->setDNProp('id-at-commonName', 'www.lubak-lubak.com');
+$subject->setDNProp('id-at-commonName', 'www.lubak-injin.com');
 $subject->setDNProp('id-at-emailAddress', 'mail@lubak-injin.com');
 $subject->setPublicKey($pubKey);
 
