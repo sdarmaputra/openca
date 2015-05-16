@@ -35,8 +35,8 @@
 <div id="login">   
   <h1>Please Login!</h1>
     <form action="logincheck.php" method="POST">
-      <input type="email" placeholder="Email" name="email"/>        
-      <input type="password" placeholder="Password" name="password"/>          
+      <input type="email" placeholder="Email" name="email" required/>        
+      <input type="password" placeholder="Password" name="password" required/>          
       <input type="submit" value="Log in" />      
     </form>
 </div>

@@ -6,24 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
-
-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>  
-<link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
-
+  <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
 
 <style>
 table, th, td {
     border: 1px solid black;
 }
 </style>
+
 </head>
-
-
-<body>
-
- 
+<body> 
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -40,13 +34,10 @@ table, th, td {
     </div>
   </div>
 </nav>
-
  
 <span href="#" class="button" id="toggle-login">Sign</span>
 
-
 <div id="login">
-  
 <div id="triangle"></div>
   
 <h1></h1>

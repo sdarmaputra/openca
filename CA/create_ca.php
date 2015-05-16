@@ -1,6 +1,6 @@
 <?php
 $page = 'create_ca';
-#include('session.php');
+include('session.php');
 include('File/X509.php');
 include('Crypt/RSA.php');
 include('db.php');
@@ -49,7 +49,7 @@ fwrite($myfile, $fileca);
 fclose($myfile);
 ?>
 
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <title>Certificate Authority</title>
@@ -63,24 +63,8 @@ fclose($myfile);
 </head>
 
 <body>
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#">Certificate Authority</a>
-      </div>
-      <div>
-        <ul class="nav navbar-nav">
-        	<li ><a href="#">Home</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="#"><i>Welcome, <?php echo $username; ?></i></a></li>
-          <li><a href="logout.php">Logout</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-	<div>
+  <?php include('navbar.php'); ?>
+  <div>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -103,4 +87,4 @@ fclose($myfile);
   <script src="js/index.js"></script>
 
 </body>
-</html> -->
+</html>

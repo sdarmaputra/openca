@@ -53,8 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
   <h1>Sign Up</h1>
     <form action="" method="POST">
       <div class="form-group">
-      <input type="email" placeholder="Email" name="email"/>        
-      <input type="password" placeholder="Password" name="password"/>
+      <input type="email" placeholder="Email" name="email" required />        
+      <input type="password" placeholder="Password" name="password" required />
       <input type="submit" name="signup" />      
       </div>
     </form>

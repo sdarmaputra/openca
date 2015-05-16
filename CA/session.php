@@ -1,6 +1,7 @@
 <?php
+$_SESSION['valid'] = false;
 session_start();
-if ($_SESSION['valid']){
+if ($_SESSION['valid']){    
     $userid = $_SESSION['userid'];
     $username = $_SESSION['username'];
     $usertype = $_SESSION['usertype'];
