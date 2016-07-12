@@ -19,7 +19,7 @@ USE `ourca`;
 CREATE TABLE IF NOT EXISTS `pending_cert` (
   `idpending` int(11) NOT NULL AUTO_INCREMENT,
   `userpending` varchar(50) NOT NULL,
-  `datepending` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `datepending` datetime NOT NULL,
   `contentpending` text NOT NULL,
   `signed` tinyint(1) NOT NULL,
   PRIMARY KEY (`idpending`)
@@ -37,7 +37,7 @@ INSERT INTO `pending_cert` (`idpending`, `userpending`, `datepending`, `contentp
 CREATE TABLE IF NOT EXISTS `signed_cert` (
   `idsigned` int(11) NOT NULL AUTO_INCREMENT,
   `usersigned` varchar(50) NOT NULL,
-  `datesigned` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `datesigned` datetime NOT NULL,
   `contentsigned` text NOT NULL,
   `active` tinyint(1) NOT NULL,
   PRIMARY KEY (`idsigned`)
@@ -69,4 +69,3 @@ INSERT INTO `user` (`userid`, `username`, `userpass`, `usertype`) VALUES
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-ourcaourca
